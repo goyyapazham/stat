@@ -7,6 +7,7 @@ int main() {
 
   struct stat *buf;
   stat("test.txt", buf);
+  
   printf("file size: %lld\n", buf->st_size);
   printf("permissions: %o\n", buf->st_mode);
 
