@@ -6,7 +6,7 @@
 #include <string.h>
 
 char * ret_perm(mode_t dig) {
-  char *buff = (char *buff)malloc(3);
+  char *buff = (char *)malloc(3);
   if( dig == 0 )
     strcpy(buff, "---");
   if( dig == 1 )
@@ -23,16 +23,18 @@ char * ret_perm(mode_t dig) {
     strcpy(buff, "rw-");
   if( dig == 7 )
     strcpy(buff, "rwx");
-  char ret[3] = *buff;
-  free(buff);
-  return ret;
+  //  char ret[3] = *buff;
+  //free(buff);
+  //return ret;
+  return buff;
 }
 
 int main() {
 
   //create stat buffer
   struct stat *buf = (struct stat *)malloc(sizeof(struct stat));
-  stat("test.txt", buf);
+  char file[10] = "test.txt";
+  stat(file, buf);
 
   //FILE SIZE
   float size = (float)(buf->st_size);
@@ -49,11 +51,13 @@ int main() {
   mode_t mode = (buf->st_mode) % 512;
   char first[3];
   strcpy(first, ret_perm(mode / 64));
+
+  
   char second[3];
   strcpy(second, ret_perm((mode / 8) % 8));
   char third[3];
   strcpy(third, ret_perm(mode % 8)); 
-  printf("permissions: %s %s %s\n", first, second, third);
+  printf("permissions: %s%s%s\n", first, second, third);
 
   //TIME OF LAST ACCESS
   struct tm *info;
@@ -64,7 +68,15 @@ int main() {
   char buffer [80];
 
   strftime(buffer,80,"time of last access: %c", info);
-  puts(buffer);
 
+  //printf("$ls -l\n");
+ 
+  //printf("$-%s%s%s %d %s %s %d ", first, second, third, buf->st_ino, buf->st_uid, buf->st_gid, buf->st_size);
+  //strftime(buffer,80,"%c ", info);
+  //printf("%s\n",file);
+  
+  puts(buffer);
+  
+  free(buf);
   return 0;
 }
