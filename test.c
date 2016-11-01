@@ -23,9 +23,6 @@ char * ret_perm(mode_t dig) {
     strcpy(buff, "rw-");
   if( dig == 7 )
     strcpy(buff, "rwx");
-  //  char ret[3] = *buff;
-  //free(buff);
-  //return ret;
   return buff;
 }
 
@@ -49,15 +46,7 @@ int main() {
 
   //PERMISSIONS
   mode_t mode = (buf->st_mode) % 512;
-  char first[3];
-  strcpy(first, ret_perm(mode / 64));
-
-  
-  char second[3];
-  strcpy(second, ret_perm((mode / 8) % 8));
-  char third[3];
-  strcpy(third, ret_perm(mode % 8)); 
-  printf("permissions: %s%s%s\n", first, second, third);
+  printf("permissions: -%s%s%s\n", ret_perm(mode/64), ret_perm((mode / 8) % 8), ret_perm(mode % 8));
 
   //TIME OF LAST ACCESS
   struct tm *info;
@@ -68,13 +57,6 @@ int main() {
   char buffer [80];
 
   strftime(buffer,80,"time of last access: %c", info);
-
-  //printf("$ls -l\n");
- 
-  //printf("$-%s%s%s %d %s %s %d ", first, second, third, buf->st_ino, buf->st_uid, buf->st_gid, buf->st_size);
-  //strftime(buffer,80,"%c ", info);
-  //printf("%s\n",file);
-  
   puts(buffer);
   
   free(buf);
